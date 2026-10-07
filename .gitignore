@@ -1,0 +1,8 @@
+API/node_modules/
+API/.env
+API/.env.render
+CLAUDE.md
+release/
+graphify-out/
+.idea/
+Apps/.idea/
