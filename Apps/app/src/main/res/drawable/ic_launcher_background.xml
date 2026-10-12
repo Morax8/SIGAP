@@ -1,0 +1,8 @@
+<!--
+  Lapis belakang ikon launcher: gelap, sewarna dengan awal gradient splash
+  (#0D0710) supaya ikon nyambung dengan tampilan aplikasi saat dibuka.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/siaga_splash_background" />
+</shape>
