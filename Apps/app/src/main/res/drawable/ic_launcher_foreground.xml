@@ -1,0 +1,16 @@
+<!--
+  Lapis depan ikon launcher: logo SIAGA.
+
+  Kanvas adaptive icon 108dp, tapi yang DIJAMIN terlihat cuma 72dp di tengah —
+  sisanya dipotong launcher (lingkaran di Pixel, squircle di Samsung). Logonya
+  setinggi 73.6% kanvas, jadi kalau dipasang langsung ujung pin dan pucuknya
+  ikut terpotong.
+
+  Inset 5dp menyusutkan gambar ke 98dp, sehingga logo jadi 73.6% x 98 ≈ 72dp —
+  pas mengisi safe zone tanpa terpotong.
+
+  Kalau logonya diganti lagi, hitung ulang: inset = (1 - 66.7/tinggiLogo%) / 2 x 108.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo_siaga"
+    android:inset="5dp" />
