@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.socket.io.client) {
         // org.json sudah ada di Android framework, hindari duplicate class
         exclude(group = "org.json", module = "json")
