@@ -13,13 +13,13 @@ In an accident or a medical emergency, people panic: they don't know what to do,
 
 | Anggota | NIM | Kontribusi |
 |---|---|---|
-| Aditya Zianur Rahman Setiadi | 00000128409 | Backend (penuh) + Android app (bertiga rata) |
-| Muhammad Faathin Naufal | 00000130562 | Android app (bertiga rata) + UI/UX design |
-| Gerald Alfons Nathaniel Werdiyanto | 00000119185 | Android app (bertiga rata) + UI/UX design |
+| Aditya Zianur Rahman Setiadi | 00000128409 | Backend + Android app |
+| Muhammad Faathin Naufal | 00000130562 | Android app + UI/UX design |
+| Gerald Alfons Nathaniel Werdiyanto | 00000119185 | Android app + UI/UX design |
 
 - **Backend** (Aditya): Express + Socket.IO (emergency API, real-time dispatch, TTS service), integrasi Gemini AI, MySQL + pencarian Haversine.
-- **Android app** (bertiga, dibagi rata): layar Chat/Faskes/Riwayat/Incident Detail/Kontak Darurat, navigasi NavHost + argument passing, form + validasi, ViewModel + StateFlow, integrasi Socket.IO/GPS/TTS/STT + widget SOS.
-- **UI/UX** (Muhammad + Gerald): custom Material 3 theme (color scheme, tipografi Inter, shape system), mockup layar.
+- **Android app** (dibagi rata): layar Chat/Faskes/Riwayat/Incident Detail/Kontak Darurat, navigasi NavHost + argument passing, form + validasi, ViewModel + StateFlow, integrasi Socket.IO/GPS/TTS/STT + widget SOS.
+- **UI/UX** (Faathin + Gerald): custom Material 3 theme (color scheme, tipografi Inter, shape system), mockup layar.
 
 ---
 
