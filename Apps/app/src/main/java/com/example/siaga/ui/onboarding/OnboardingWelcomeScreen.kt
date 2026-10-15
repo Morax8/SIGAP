@@ -18,9 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,19 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.siaga.R
 import com.example.siaga.ui.components.SiagaBackdrop
+import com.example.siaga.ui.theme.GlassBorder
+import com.example.siaga.ui.theme.GlassFill
 import com.example.siaga.ui.theme.SIAGATheme
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextMuted
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.SiagaTextDimmer
+import com.example.siaga.ui.theme.SiagaWelcomeRingInner
+import com.example.siaga.ui.theme.SiagaWelcomeRingOuter
 
 /** Tinggi frame Figma "SIAGA - 02 Onboarding Welcome". */
 private const val DESIGN_HEIGHT = 891.61f
-
-private val GlassFill = Color(0x14FFFFFF) // putih 8%
-private val GlassBorder = Color(0x2EFFFFFF) // putih 18%
-private val RingOuter = Color(0xFF1E1E1E)
-private val RingInner = Color(0xFF2A1010)
-private val DotIdle = Color(0xFF444444)
 
 /**
  * SIAGA - 02 Onboarding Welcome.
@@ -71,7 +67,7 @@ fun OnboardingWelcomeScreen(
             text = "Lewati",
             fontWeight = FontWeight.Normal,
             fontSize = 13.733.sp,
-            color = SiagaTextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -98,7 +94,7 @@ fun OnboardingWelcomeScreen(
                 fontWeight = FontWeight.Bold,
                 fontSize = 27.467.sp,
                 lineHeight = 32.96.sp, // 1.2 x ukuran font
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -111,7 +107,7 @@ fun OnboardingWelcomeScreen(
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.733.sp,
                 lineHeight = 19.91.sp, // 1.45 x ukuran font
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.width(327.487.dp),
             )
@@ -124,8 +120,8 @@ fun OnboardingWelcomeScreen(
 
             Button(
                 onClick = onStart,
-                shape = RoundedCornerShape(16.903.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier
                     .padding(horizontal = 25.354.dp)
@@ -136,7 +132,7 @@ fun OnboardingWelcomeScreen(
                     text = "Mulai",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.903.sp,
-                    color = SiagaTextPrimary,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
 
@@ -146,7 +142,7 @@ fun OnboardingWelcomeScreen(
                 text = "Sudah pakai SIGAP? Masuk",
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.677.sp,
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -183,13 +179,13 @@ private fun MicEmblem() {
         Box(
             modifier = Modifier
                 .size(312.697.dp)
-                .border(1.585.dp, RingOuter, CircleShape)
+                .border(1.585.dp, SiagaWelcomeRingOuter, CircleShape)
         )
         // Cincin dalam (28:4)
         Box(
             modifier = Modifier
                 .size(249.313.dp)
-                .border(1.056.dp, RingInner, CircleShape)
+                .border(1.056.dp, SiagaWelcomeRingInner, CircleShape)
         )
         Image(
             painter = painterResource(R.drawable.mic_badge),
@@ -206,9 +202,9 @@ private fun PageIndicator() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.338.dp),
     ) {
-        Box(Modifier.size(8.451.dp).background(SiagaRed, CircleShape))
-        Box(Modifier.size(6.338.dp).background(DotIdle, CircleShape))
-        Box(Modifier.size(6.338.dp).background(DotIdle, CircleShape))
+        Box(Modifier.size(8.451.dp).background(MaterialTheme.colorScheme.primary, CircleShape))
+        Box(Modifier.size(6.338.dp).background(SiagaTextDimmer, CircleShape))
+        Box(Modifier.size(6.338.dp).background(SiagaTextDimmer, CircleShape))
     }
 }
 

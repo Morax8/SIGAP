@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.example.siaga.R
 import com.example.siaga.ui.components.SiagaBackdrop
 import com.example.siaga.ui.theme.SIAGATheme
-import com.example.siaga.ui.theme.SiagaTextMuted
-import com.example.siaga.ui.theme.SiagaTextPrimary
 
 /** Tinggi frame Figma "SIAGA - 01 Splash". */
 private const val DESIGN_HEIGHT = 917f
@@ -59,7 +58,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 38.031.sp,
                 letterSpacing = 1.5212.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -70,7 +69,7 @@ fun SplashScreen(modifier: Modifier = Modifier) {
                 text = "Respons darurat dalam sekali sentuh.",
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.733.sp,
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )

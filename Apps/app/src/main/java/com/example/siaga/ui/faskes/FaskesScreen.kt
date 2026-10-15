@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,10 +39,8 @@ import com.example.siaga.data.location.LocationClient
 import com.example.siaga.ui.components.SiagaBackdrop
 import com.example.siaga.ui.components.SiagaGlassCard
 import com.example.siaga.ui.components.SiagaPageHeader
-import com.example.siaga.ui.components.SiagaTextDim
-import com.example.siaga.ui.components.SiagaTextNavIdle
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.SiagaTextDim
+import com.example.siaga.ui.theme.SiagaTextNavIdle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -125,7 +123,7 @@ fun FaskesScreen(
 
             when {
                 uiState.isLoading -> CenterMessage {
-                    CircularProgressIndicator(color = SiagaRed, strokeWidth = 2.dp)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary, strokeWidth = 2.dp)
                 }
 
                 uiState.error != null -> CenterMessage {
@@ -139,10 +137,10 @@ fun FaskesScreen(
                         Spacer(Modifier.height(12.677.dp))
                         Button(
                             onClick = viewModel::load,
-                            shape = RoundedCornerShape(10.564.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+                            shape = MaterialTheme.shapes.extraSmall,
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         ) {
-                            Text("Coba lagi", fontSize = 12.677.sp, color = SiagaTextPrimary)
+                            Text("Coba lagi", fontSize = 12.677.sp, color = MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }
@@ -183,7 +181,7 @@ private fun HospitalCard(hospital: NearbyHospital, onCall: (String) -> Unit) {
                     text = hospital.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.79.sp,
-                    color = SiagaTextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Spacer(Modifier.height(4.226.dp))
                 Text(
@@ -199,7 +197,7 @@ private fun HospitalCard(hospital: NearbyHospital, onCall: (String) -> Unit) {
                     text = if (km < 10) "%.1f km".format(km) else "%.0f km".format(km),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.677.sp,
-                    color = SiagaRed,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -208,8 +206,8 @@ private fun HospitalCard(hospital: NearbyHospital, onCall: (String) -> Unit) {
 
         Button(
             onClick = { onCall(hospital.phone) },
-            shape = RoundedCornerShape(10.564.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             contentPadding = PaddingValues(horizontal = 12.677.dp),
             modifier = Modifier.height(33.805.dp),
         ) {
@@ -217,7 +215,7 @@ private fun HospitalCard(hospital: NearbyHospital, onCall: (String) -> Unit) {
                 text = "Telepon ${hospital.phone}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.621.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

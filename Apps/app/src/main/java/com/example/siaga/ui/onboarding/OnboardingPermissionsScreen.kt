@@ -20,9 +20,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,17 +38,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.siaga.R
 import com.example.siaga.ui.components.SiagaBackdrop
+import com.example.siaga.ui.theme.GlassBorder
+import com.example.siaga.ui.theme.GlassFill
 import com.example.siaga.ui.theme.SIAGATheme
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextMuted
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.SiagaIconCircle
 
 /** Tinggi frame Figma "SIAGA - 03 Onboarding Permissions". */
 private const val DESIGN_HEIGHT = 891.61f
-
-private val CardFill = Color(0x14FFFFFF) // putih 8%
-private val CardBorder = Color(0x2EFFFFFF) // putih 18%
-private val IconCircleFill = Color(0x26C0392B) // merah 15%
 
 /**
  * Izin yang diminta di layar ini.
@@ -88,7 +84,7 @@ fun OnboardingPermissionsScreen(
             text = "Lewati",
             fontWeight = FontWeight.Normal,
             fontSize = 13.733.sp,
-            color = SiagaTextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.End,
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -108,7 +104,7 @@ fun OnboardingPermissionsScreen(
                 text = "Izinkan akses\npenting",
                 fontWeight = FontWeight.Bold,
                 fontSize = 27.467.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             Spacer(Modifier.height(14.79.dp))
@@ -118,7 +114,7 @@ fun OnboardingPermissionsScreen(
                     "mungkin saat darurat.",
                 fontWeight = FontWeight.Normal,
                 fontSize = 13.733.sp,
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             Spacer(Modifier.height(21.128.dp))
@@ -153,8 +149,8 @@ fun OnboardingPermissionsScreen(
 
             Button(
                 onClick = { permissionLauncher.launch(REQUESTED_PERMISSIONS) },
-                shape = RoundedCornerShape(16.903.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+                shape = MaterialTheme.shapes.medium,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -164,7 +160,7 @@ fun OnboardingPermissionsScreen(
                     text = "Izinkan & Lanjutkan",
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.903.sp,
-                    color = SiagaTextPrimary,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
 
@@ -174,7 +170,7 @@ fun OnboardingPermissionsScreen(
                 text = "Nanti saja",
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.677.sp,
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -205,15 +201,15 @@ private fun PermissionCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(97.19.dp)
-            .shadow(19.015.dp, RoundedCornerShape(16.903.dp), spotColor = Color.Black)
-            .background(CardFill, RoundedCornerShape(16.903.dp))
-            .border(1.056.dp, CardBorder, RoundedCornerShape(16.903.dp))
+            .shadow(19.015.dp, MaterialTheme.shapes.medium, spotColor = Color.Black)
+            .background(GlassFill, MaterialTheme.shapes.medium)
+            .border(1.056.dp, GlassBorder, MaterialTheme.shapes.medium)
             .padding(start = 16.903.dp, top = 25.354.dp),
     ) {
         Box(
             modifier = Modifier
                 .size(46.482.dp)
-                .background(IconCircleFill, CircleShape),
+                .background(SiagaIconCircle, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
             Image(
@@ -228,14 +224,14 @@ private fun PermissionCard(
                 text = title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.79.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(Modifier.height(4.226.dp))
             Text(
                 text = description,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.677.sp,
-                color = SiagaTextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.width(264.103.dp),
             )
         }

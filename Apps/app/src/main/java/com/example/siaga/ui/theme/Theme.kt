@@ -1,58 +1,54 @@
 package com.example.siaga.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+/**
+ * Skema warna SIAGA (Material 3).
+ *
+ * Setiap slot dipetakan ke palet SIAGA di Color.kt dengan nilai hex yang sama
+ * persis seperti desain lama. Jadi tampilan tidak berubah — yang berubah hanya
+ * caranya: warna kini dibaca lewat MaterialTheme.colorScheme di semua layar,
+ * bukan val top-level yang tersebar.
+ */
+private val SiagaColorScheme = darkColorScheme(
+    primary = SiagaRed,               // merah darurat = identitas aplikasi
     onPrimary = Color.White,
+    secondary = SiagaRed,
     onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    background = SiagaBackgroundStart, // ujung atas gradient latar
+    onBackground = SiagaTextPrimary,
+    surface = SiagaBackgroundEnd,      // ujung bawah gradient / permukaan gelap
+    onSurface = SiagaTextPrimary,
+    surfaceVariant = SiagaBackgroundEnd,
+    onSurfaceVariant = SiagaTextMuted,
+    error = SiagaRed,                  // app darurat: merah tetap jadi identitas
+    onError = Color.White,
+    outline = GlassBorder,             // garis tepi kaca (putih 18%)
+    outlineVariant = GlassBorder,
 )
 
+/**
+ * Tema Material 3 aplikasi SIAGA.
+ *
+ * DARK-ONLY BY DESIGN: latar gelap dengan aksen merah darurat. Karena itu
+ * [darkTheme] selalu true dan mode terang/gelap sistem tidak dibaca lagi, dan
+ * [dynamicColor] dimatikan supaya warna wallpaper (Material You) tidak pernah
+ * bocor ke identitas aplikasi. Kedua parameter dipertahankan hanya agar
+ * pemanggil lama tetap kompabel; nilainya sengaja diabaikan.
+ */
 @Composable
 fun SIAGATheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    darkTheme: Boolean = true,
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = SiagaColorScheme,
         typography = Typography,
-        content = content
+        shapes = SiagaShapes,
+        content = content,
     )
 }

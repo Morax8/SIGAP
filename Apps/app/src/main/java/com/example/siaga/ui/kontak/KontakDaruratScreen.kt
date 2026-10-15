@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SnackbarDuration
@@ -41,13 +41,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.siaga.data.ContactData
 import com.example.siaga.data.ContactPreferences
-import com.example.siaga.ui.components.GlassBorder
 import com.example.siaga.ui.components.SiagaBackdrop
 import com.example.siaga.ui.components.SiagaGlassCard
 import com.example.siaga.ui.components.SiagaPageHeader
-import com.example.siaga.ui.components.SiagaTextNavIdle
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.GlassBorder
+import com.example.siaga.ui.theme.SiagaTextNavIdle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -302,8 +300,8 @@ fun KontakDaruratScreen(
                 Button(
                     onClick = viewModel::save,
                     enabled = uiState.canSave,
-                    shape = RoundedCornerShape(10.564.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+                    shape = MaterialTheme.shapes.extraSmall,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(46.482.dp),
@@ -312,7 +310,7 @@ fun KontakDaruratScreen(
                         text = "Simpan",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.79.sp,
-                        color = SiagaTextPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
 
@@ -354,19 +352,19 @@ private fun KontakField(
         supportingText = error?.let { { Text(it, fontSize = 10.564.sp) } },
         singleLine = singleLine,
         minLines = minLines,
-        textStyle = TextStyle(fontSize = 12.677.sp, color = SiagaTextPrimary),
-        shape = RoundedCornerShape(10.564.dp),
+        textStyle = TextStyle(fontSize = 12.677.sp, color = MaterialTheme.colorScheme.onSurface),
+        shape = MaterialTheme.shapes.extraSmall,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = SiagaRed,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
             unfocusedBorderColor = GlassBorder,
-            cursorColor = SiagaRed,
-            focusedLabelColor = SiagaRed,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
             unfocusedLabelColor = SiagaTextNavIdle,
-            errorBorderColor = SiagaRed,
-            errorCursorColor = SiagaRed,
-            errorLabelColor = SiagaRed,
-            errorSupportingTextColor = SiagaRed,
+            errorBorderColor = MaterialTheme.colorScheme.primary,
+            errorCursorColor = MaterialTheme.colorScheme.primary,
+            errorLabelColor = MaterialTheme.colorScheme.primary,
+            errorSupportingTextColor = MaterialTheme.colorScheme.primary,
         ),
         modifier = Modifier.fillMaxWidth(),
     )

@@ -35,6 +35,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -62,8 +63,19 @@ import com.example.siaga.R
 import com.example.siaga.data.model.EmergencyState
 import com.example.siaga.data.model.Hospital
 import com.example.siaga.ui.components.SiagaBackdrop
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.GlassBorder
+import com.example.siaga.ui.theme.GlassFill
+import com.example.siaga.ui.theme.GlassFillStrong
+import com.example.siaga.ui.theme.SiagaInputScrim
+import com.example.siaga.ui.theme.SiagaOverlayScrim
+import com.example.siaga.ui.theme.SiagaRingActiveInner
+import com.example.siaga.ui.theme.SiagaRingActiveOuter
+import com.example.siaga.ui.theme.SiagaRingIdle
+import com.example.siaga.ui.theme.SiagaStatusConnected
+import com.example.siaga.ui.theme.SiagaStatusConnecting
+import com.example.siaga.ui.theme.SiagaTextDim
+import com.example.siaga.ui.theme.SiagaTextDimmer
+import com.example.siaga.ui.theme.SiagaTextNavIdle
 import kotlinx.coroutines.delay
 
 /** Tinggi frame Figma "SIAGA - 05 SOS Recording (Active)". */
@@ -80,16 +92,6 @@ private const val LOCATION_LABEL = "Gading Serpong"
  * Nomor tujuannya diatur di backend (DEMO_PHONE).
  */
 private const val AUTO_CALL = true
-
-private val GlassFill = Color(0x14FFFFFF) // putih 8%
-private val GlassBorder = Color(0x2EFFFFFF) // putih 18%
-private val RingOuterActive = Color(0x40C0392B) // merah 25%
-private val RingInnerActive = Color(0x66C0392B) // merah 40%
-private val RingIdle = Color(0x1FC0392B) // redup saat tidak merekam
-private val ConnectedGreen = Color(0xFF22C55E)
-private val TextDim = Color(0xFF555555)
-private val TextDimmer = Color(0xFF444444)
-private val TextNavIdle = Color(0xFF666666)
 
 /**
  * SIAGA - 05, layar darurat utama.
@@ -228,7 +230,7 @@ fun ChatScreen(
                 Text(
                     text = "Ceritakan kondisi korban\ndengan jelas dan tenang",
                     fontSize = 12.677.sp,
-                    color = TextDimmer,
+                    color = SiagaTextDimmer,
                     textAlign = TextAlign.Center,
                     lineHeight = 19.015.sp,
                 )
@@ -267,7 +269,7 @@ fun ChatScreen(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .imePadding()
-                    .background(Color(0xF2101010))
+                    .background(SiagaInputScrim)
                     .padding(horizontal = 21.128.dp, vertical = 12.677.dp),
             ) {
                 TypedInput(
@@ -302,7 +304,7 @@ private fun CrashCountdownOverlay(seconds: Int, onCancel: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xF20D0710))
+            .background(SiagaOverlayScrim)
             // Telan semua sentuhan supaya tombol di bawahnya tidak tertekan
             .pointerInput(Unit) { detectTapGestures { } },
         contentAlignment = Alignment.Center,
@@ -315,14 +317,14 @@ private fun CrashCountdownOverlay(seconds: Int, onCancel: () -> Unit) {
                 text = "Benturan terdeteksi",
                 fontWeight = FontWeight.Bold,
                 fontSize = 27.467.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(12.677.dp))
             Text(
                 text = "Laporan darurat dikirim otomatis dalam",
                 fontSize = 13.733.sp,
-                color = TextDim,
+                color = SiagaTextDim,
                 textAlign = TextAlign.Center,
             )
             Spacer(Modifier.height(21.128.dp))
@@ -330,14 +332,14 @@ private fun CrashCountdownOverlay(seconds: Int, onCancel: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(126.769.dp)
-                    .border(2.113.dp, SiagaRed, CircleShape),
+                    .border(2.113.dp, MaterialTheme.colorScheme.primary, CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = "$seconds",
                     fontWeight = FontWeight.Bold,
                     fontSize = 46.482.sp,
-                    color = SiagaRed,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
 
@@ -346,7 +348,7 @@ private fun CrashCountdownOverlay(seconds: Int, onCancel: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(width = 211.282.dp, height = 52.821.dp)
-                    .background(Color(0x0FFFFFFF), RoundedCornerShape(26.41.dp))
+                    .background(GlassFillStrong, RoundedCornerShape(26.41.dp))
                     .border(1.585.dp, GlassBorder, RoundedCornerShape(26.41.dp))
                     .clickable(onClick = onCancel),
                 contentAlignment = Alignment.Center,
@@ -355,7 +357,7 @@ private fun CrashCountdownOverlay(seconds: Int, onCancel: () -> Unit) {
                     text = "Saya tidak apa-apa",
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.79.sp,
-                    color = SiagaTextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -370,9 +372,9 @@ private fun androidx.compose.foundation.layout.BoxScope.TopBar(
     onRetry: () -> Unit,
 ) {
     val (dotColor, label) = when (status) {
-        ConnectionStatus.CONNECTED -> ConnectedGreen to "Terhubung"
-        ConnectionStatus.CONNECTING -> Color(0xFFF9A825) to "Menghubungkanâ€¦"
-        ConnectionStatus.DISCONNECTED -> SiagaRed to "Terputus"
+        ConnectionStatus.CONNECTED -> SiagaStatusConnected to "Terhubung"
+        ConnectionStatus.CONNECTING -> SiagaStatusConnecting to "Menghubungkanâ€¦"
+        ConnectionStatus.DISCONNECTED -> MaterialTheme.colorScheme.primary to "Terputus"
     }
 
     Row(
@@ -384,14 +386,14 @@ private fun androidx.compose.foundation.layout.BoxScope.TopBar(
     ) {
         Box(Modifier.size(8.451.dp).background(dotColor, CircleShape))
         Spacer(Modifier.width(6.338.dp))
-        Text(label, fontSize = 11.621.sp, color = TextDim)
+        Text(label, fontSize = 11.621.sp, color = SiagaTextDim)
     }
 
     Text(
         text = "SIGAP",
         fontWeight = FontWeight.Bold,
         fontSize = 11.621.sp,
-        color = TextDimmer,
+        color = SiagaTextDimmer,
         modifier = Modifier
             .align(Alignment.TopStart)
             .offset(x = 25.354.dp, y = y(89.795f)),
@@ -406,8 +408,8 @@ private fun androidx.compose.foundation.layout.BoxScope.TopBar(
             .align(Alignment.TopEnd)
             .offset(x = (-21.128).dp, y = y(84.513f))
             .height(27.467.dp)
-            .background(GlassFill, RoundedCornerShape(13.733.dp))
-            .border(1.056.dp, GlassBorder, RoundedCornerShape(13.733.dp))
+            .background(GlassFill, MaterialTheme.shapes.small)
+            .border(1.056.dp, GlassBorder, MaterialTheme.shapes.small)
             .padding(horizontal = 12.677.dp),
     ) {
         Image(
@@ -416,7 +418,7 @@ private fun androidx.compose.foundation.layout.BoxScope.TopBar(
             modifier = Modifier.size(8.652.dp),
         )
         Spacer(Modifier.width(6.338.dp))
-        Text(LOCATION_LABEL, fontSize = 10.564.sp, color = TextNavIdle)
+        Text(LOCATION_LABEL, fontSize = 10.564.sp, color = SiagaTextNavIdle)
     }
 }
 
@@ -435,11 +437,11 @@ private fun StatusHeadline(uiState: ChatUiState) {
             fontWeight = FontWeight.Bold,
             fontSize = 27.467.sp,
             lineHeight = 33.805.sp,
-            color = SiagaTextPrimary,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(12.677.dp))
-        Text(subtitle, fontSize = 13.733.sp, color = TextDim)
+        Text(subtitle, fontSize = 13.733.sp, color = SiagaTextDim)
     }
 }
 
@@ -450,8 +452,8 @@ private fun MicEmblem(
     onPressStart: () -> Unit,
     onPressEnd: () -> Unit,
 ) {
-    val outer = if (isListening) RingOuterActive else RingIdle
-    val inner = if (isListening) RingInnerActive else RingIdle
+    val outer = if (isListening) SiagaRingActiveOuter else SiagaRingIdle
+    val inner = if (isListening) SiagaRingActiveInner else SiagaRingIdle
 
     Box(
         modifier = Modifier.size(312.697.dp),
@@ -520,23 +522,23 @@ private fun TranscriptCard(
                 text = "TRANSKRIP",
                 fontWeight = FontWeight.Bold,
                 fontSize = 9.508.sp,
-                color = TextDimmer,
+                color = SiagaTextDimmer,
                 modifier = Modifier.weight(1f),
             )
             if (uiState.isListening) {
-                Box(Modifier.size(6.338.dp).background(SiagaRed, CircleShape))
+                Box(Modifier.size(6.338.dp).background(MaterialTheme.colorScheme.primary, CircleShape))
                 Spacer(Modifier.width(10.564.dp))
                 Text(
                     text = "%02d:%02d".format(elapsedSeconds / 60, elapsedSeconds % 60),
                     fontWeight = FontWeight.Bold,
                     fontSize = 11.621.sp,
-                    color = SiagaRed,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             } else {
                 Icon(
                     painter = painterResource(R.drawable.ic_keyboard),
                     contentDescription = "Ketik manual",
-                    tint = TextNavIdle,
+                    tint = SiagaTextNavIdle,
                     modifier = Modifier
                         .size(16.903.dp)
                         .clickable(onClick = onToggleTypedInput),
@@ -563,7 +565,7 @@ private fun TranscriptCard(
                     text = "KONDISI KRITIS",
                     fontWeight = FontWeight.Bold,
                     fontSize = 9.508.sp,
-                    color = SiagaRed,
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(Modifier.height(4.226.dp))
             }
@@ -571,7 +573,7 @@ private fun TranscriptCard(
                 text = body,
                 fontSize = 12.677.sp,
                 lineHeight = 19.015.sp,
-                color = if (uiState.isListening || lastAi != null) SiagaTextPrimary else TextDimmer,
+                color = if (uiState.isListening || lastAi != null) MaterialTheme.colorScheme.onSurface else SiagaTextDimmer,
             )
             lastAi?.hospital?.takeIf { !uiState.isListening }?.let { hospital ->
                 Spacer(Modifier.height(10.564.dp))
@@ -589,18 +591,18 @@ private fun HospitalRow(hospital: Hospital, onCall: (String) -> Unit) {
             text = hospital.name,
             fontWeight = FontWeight.Bold,
             fontSize = 12.677.sp,
-            color = SiagaTextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             text = "${hospital.address} â€¢ ${hospital.distance}",
             fontSize = 10.564.sp,
-            color = TextNavIdle,
+            color = SiagaTextNavIdle,
         )
         Spacer(Modifier.height(6.338.dp))
         Button(
             onClick = { onCall(hospital.phone) },
-            shape = RoundedCornerShape(10.564.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             contentPadding = PaddingValues(horizontal = 12.677.dp),
             modifier = Modifier.height(33.805.dp),
         ) {
@@ -608,7 +610,7 @@ private fun HospitalRow(hospital: Hospital, onCall: (String) -> Unit) {
                 text = "Telepon ${hospital.phone}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.621.sp,
-                color = SiagaTextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -621,14 +623,14 @@ private fun TypedInput(onSend: (String) -> Unit) {
         OutlinedTextField(
             value = input,
             onValueChange = { input = it },
-            placeholder = { Text("Ketik keadaan darurat¦", fontSize = 12.677.sp, color = TextNavIdle) },
-            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.677.sp, color = SiagaTextPrimary),
+            placeholder = { Text("Ketik keadaan darurat¦", fontSize = 12.677.sp, color = SiagaTextNavIdle) },
+            textStyle = androidx.compose.ui.text.TextStyle(fontSize = 12.677.sp, color = MaterialTheme.colorScheme.onSurface),
             singleLine = true,
-            shape = RoundedCornerShape(10.564.dp),
+            shape = MaterialTheme.shapes.extraSmall,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = SiagaRed,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = GlassBorder,
-                cursorColor = SiagaRed,
+                cursorColor = MaterialTheme.colorScheme.primary,
             ),
             modifier = Modifier.weight(1f),
         )
@@ -636,7 +638,7 @@ private fun TypedInput(onSend: (String) -> Unit) {
         Icon(
             painter = painterResource(R.drawable.ic_send),
             contentDescription = "Kirim",
-            tint = SiagaRed,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(21.128.dp)
                 .clickable(enabled = input.isNotBlank()) { onSend(input); input = "" },
@@ -649,11 +651,11 @@ private fun CancelButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(width = 158.462.dp, height = 46.482.dp)
-            .background(Color(0x0FFFFFFF), RoundedCornerShape(23.241.dp))
-            .border(1.585.dp, SiagaRed, RoundedCornerShape(23.241.dp))
+            .background(GlassFillStrong, MaterialTheme.shapes.large)
+            .border(1.585.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.large)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text("Batalkan", fontWeight = FontWeight.Bold, fontSize = 14.79.sp, color = SiagaRed)
+        Text("Batalkan", fontWeight = FontWeight.Bold, fontSize = 14.79.sp, color = MaterialTheme.colorScheme.primary)
     }
 }

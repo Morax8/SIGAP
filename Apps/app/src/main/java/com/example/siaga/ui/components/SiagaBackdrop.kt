@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -23,8 +24,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.example.siaga.R
 import com.example.siaga.ui.theme.Inter
-import com.example.siaga.ui.theme.SiagaBackgroundEnd
-import com.example.siaga.ui.theme.SiagaBackgroundStart
 
 /**
  * Gaya teks dasar layar SIAGA.
@@ -59,9 +58,15 @@ fun SiagaBackdrop(
 ) {
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val density = LocalDensity.current
+        // Gradient latar diambil dari tema: background (ujung atas) -> surface
+        // (ujung bawah). Nilainya sama persis dengan palet SIAGA lama.
+        val gradientColors = listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.surface,
+        )
         val background = with(density) {
             Brush.linearGradient(
-                colors = listOf(SiagaBackgroundStart, SiagaBackgroundEnd),
+                colors = gradientColors,
                 start = Offset(
                     x = maxWidth.toPx() * 0.040f,
                     y = maxHeight.toPx() * 0.220f,

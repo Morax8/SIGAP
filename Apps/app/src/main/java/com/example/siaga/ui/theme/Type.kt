@@ -39,29 +39,52 @@ val Inter = FontFamily(
     ),
 )
 
-// Set of Material typography styles to start with
+/**
+ * Tipografi SIAGA — semua gaya memakai Inter tanpa letter spacing, mengikuti
+ * desain Figma. Ukuran sp diambil dari yang sudah dipakai layar sekarang, jadi
+ * menerapkannya lewat MaterialTheme.typography tidak mengubah tampilan.
+ *
+ * Catatan: [Typography.bodyLarge] sengaja dibiarkan seperti bawaan template.
+ * Layar SIAGA tidak mewarisinya (SiagaBackdrop menimpa LocalTextStyle dengan
+ * Inter tanpa letter spacing), dan satu-satunya pemakainya adalah komponen
+ * transient Material 3 (mis. Snackbar) — mengubahnya justru akan menggeser
+ * tampilan komponen itu. Gaya yang benar-benar dipakai aplikasi didefinisikan
+ * eksplisit di bawah ini.
+ */
 val Typography = Typography(
+    // Judul halaman (header SIAGA-03): besar & tebal.
+    titleLarge = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Bold,
+        fontSize = 27.467.sp,
+        letterSpacing = 0.sp,
+    ),
+    // Subtitle header & teks sekunder.
+    bodyMedium = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 13.733.sp,
+        letterSpacing = 0.sp,
+    ),
+    // Teks isi & input.
+    bodySmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.677.sp,
+        letterSpacing = 0.sp,
+    ),
+    // Label kecil: item nav bar & chip.
+    labelSmall = TextStyle(
+        fontFamily = Inter,
+        fontWeight = FontWeight.Normal,
+        fontSize = 9.508.sp,
+        letterSpacing = 0.sp,
+    ),
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
 )

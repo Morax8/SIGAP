@@ -16,10 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,10 +38,8 @@ import com.example.siaga.data.model.EmergencyState
 import com.example.siaga.ui.components.SiagaBackdrop
 import com.example.siaga.ui.components.SiagaGlassCard
 import com.example.siaga.ui.components.SiagaPageHeader
-import com.example.siaga.ui.components.SiagaTextDim
-import com.example.siaga.ui.components.SiagaTextNavIdle
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.SiagaTextDim
+import com.example.siaga.ui.theme.SiagaTextNavIdle
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -144,13 +142,13 @@ private fun IncidentDetailCard(incident: Incident) {
                 modifier = Modifier.weight(1f),
             )
             if (incident.state == EmergencyState.CRITICAL) {
-                Box(Modifier.size(6.338.dp).background(SiagaRed, CircleShape))
+                Box(Modifier.size(6.338.dp).background(MaterialTheme.colorScheme.primary, CircleShape))
                 Spacer(Modifier.size(6.338.dp))
                 Text(
                     text = "KRITIS",
                     fontWeight = FontWeight.Bold,
                     fontSize = 9.508.sp,
-                    color = SiagaRed,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -162,7 +160,7 @@ private fun IncidentDetailCard(incident: Incident) {
             fontWeight = FontWeight.Bold,
             fontSize = 13.733.sp,
             lineHeight = 19.91.sp,
-            color = SiagaTextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         incident.instruction?.let { instruction ->
@@ -190,7 +188,7 @@ private fun IncidentDetailCard(incident: Incident) {
                 text = "Dirujuk ke $name",
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.621.sp,
-                color = SiagaRed,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
 
@@ -204,8 +202,8 @@ private fun IncidentDetailCard(incident: Incident) {
                         Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                     )
                 },
-                shape = RoundedCornerShape(10.564.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = SiagaRed),
+                shape = MaterialTheme.shapes.extraSmall,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 contentPadding = PaddingValues(horizontal = 12.677.dp),
                 modifier = Modifier.height(33.805.dp),
             ) {
@@ -213,7 +211,7 @@ private fun IncidentDetailCard(incident: Incident) {
                     text = "Telepon $phone",
                     fontWeight = FontWeight.Bold,
                     fontSize = 11.621.sp,
-                    color = SiagaTextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

@@ -16,25 +16,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.siaga.R
-import com.example.siaga.ui.theme.SiagaRed
-import com.example.siaga.ui.theme.SiagaTextPrimary
+import com.example.siaga.ui.theme.GlassBorder
+import com.example.siaga.ui.theme.GlassFill
+import com.example.siaga.ui.theme.SiagaNavTopCorner
+import com.example.siaga.ui.theme.SiagaTextDim
+import com.example.siaga.ui.theme.SiagaTextNavIdle
 
-// Gaya kaca dari desain Figma, dipakai semua kartu & panel.
-val GlassFill = Color(0x14FFFFFF) // putih 8%
-val GlassBorder = Color(0x2EFFFFFF) // putih 18%
-val SiagaTextDim = Color(0xFF555555)
-val SiagaTextDimmer = Color(0xFF444444)
-val SiagaTextNavIdle = Color(0xFF666666)
+// Warna kaca & teks berjenjang dipusatkan di ui/theme/Color.kt (warna ekstensi
+// tema); warna semantik diambil lewat MaterialTheme.colorScheme.
 
 /** Halaman yang bisa dipilih lewat nav bar bawah. */
 enum class SiagaTab(val label: String, val icon: Int) {
@@ -55,16 +53,15 @@ fun SiagaNavBar(
     onSelect: (SiagaTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // Hanya dua sudut atas yang dibulatkan; lihat SiagaNavTopCorner di Shape.kt
+    // (memakai shapes.extraLarge langsung akan membulatkan keempat sudut).
+    val navShape = RoundedCornerShape(topStart = SiagaNavTopCorner, topEnd = SiagaNavTopCorner)
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(95.077.dp)
-            .background(GlassFill, RoundedCornerShape(topStart = 25.354.dp, topEnd = 25.354.dp))
-            .border(
-                1.056.dp,
-                GlassBorder,
-                RoundedCornerShape(topStart = 25.354.dp, topEnd = 25.354.dp),
-            )
+            .background(GlassFill, navShape)
+            .border(1.056.dp, GlassBorder, navShape)
             .padding(top = 12.677.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
@@ -76,6 +73,7 @@ fun SiagaNavBar(
 
 @Composable
 private fun NavItem(tab: SiagaTab, selected: Boolean, onClick: () -> Unit) {
+    val tint = if (selected) MaterialTheme.colorScheme.onSurface else SiagaTextNavIdle
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.clickable(onClick = onClick),
@@ -84,9 +82,7 @@ private fun NavItem(tab: SiagaTab, selected: Boolean, onClick: () -> Unit) {
             Image(
                 painter = painterResource(tab.icon),
                 contentDescription = tab.label,
-                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
-                    if (selected) SiagaTextPrimary else SiagaTextNavIdle
-                ),
+                colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(tint),
                 modifier = Modifier.size(23.241.dp),
             )
             if (selected) {
@@ -94,16 +90,16 @@ private fun NavItem(tab: SiagaTab, selected: Boolean, onClick: () -> Unit) {
                     modifier = Modifier
                         .offset(y = (-9.5).dp)
                         .size(4.226.dp)
-                        .background(SiagaRed, CircleShape)
+                        .background(MaterialTheme.colorScheme.primary, CircleShape)
                 )
             }
         }
         Spacer(Modifier.height(9.508.dp))
         Text(
             text = tab.label,
+            style = MaterialTheme.typography.labelSmall,
             fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-            fontSize = 9.508.sp,
-            color = if (selected) SiagaTextPrimary else SiagaTextNavIdle,
+            color = tint,
         )
     }
 }
@@ -114,12 +110,15 @@ fun SiagaPageHeader(title: String, subtitle: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = title,
-            fontWeight = FontWeight.Bold,
-            fontSize = 27.467.sp,
-            color = SiagaTextPrimary,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(Modifier.height(8.451.dp))
-        Text(text = subtitle, fontSize = 13.733.sp, color = SiagaTextDim)
+        Text(
+            text = subtitle,
+            style = MaterialTheme.typography.bodyMedium,
+            color = SiagaTextDim,
+        )
     }
 }
 
@@ -132,8 +131,8 @@ fun SiagaGlassCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(GlassFill, RoundedCornerShape(16.903.dp))
-            .border(1.056.dp, GlassBorder, RoundedCornerShape(16.903.dp))
+            .background(GlassFill, MaterialTheme.shapes.medium)
+            .border(1.056.dp, GlassBorder, MaterialTheme.shapes.medium)
             .padding(16.903.dp),
         content = content,
     )
