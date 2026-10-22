@@ -3,6 +3,7 @@ API/.env
 API/.env.render
 API/.env.vps
 CLAUDE.md
+*.mp4
 release/
 graphify-out/
 .idea/
