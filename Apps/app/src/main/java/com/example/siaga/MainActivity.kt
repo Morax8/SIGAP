@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -99,7 +102,14 @@ fun SIAGAApp(startListening: Boolean = false) {
         }
     }
 
-    NavHost(navController = navController, startDestination = ROUTE_SPLASH) {
+    NavHost(
+        navController = navController,
+        startDestination = ROUTE_SPLASH,
+        enterTransition = { fadeIn(tween(250)) },
+        exitTransition = { fadeOut(tween(250)) },
+        popEnterTransition = { fadeIn(tween(250)) },
+        popExitTransition = { fadeOut(tween(250)) },
+    ) {
         composable(ROUTE_SPLASH) {
             SplashScreen()
             SplashGate(chatViewModel, onboardingPrefs) { alreadyOnboarded ->
@@ -202,7 +212,14 @@ private fun MainTabs(chatViewModel: ChatViewModel, startListening: Boolean = fal
         SiagaNavBar(selected = selected, onSelect = ::navigateToTab)
     }
 
-    NavHost(navController = navController, startDestination = ROUTE_EMERGENCY) {
+    NavHost(
+        navController = navController,
+        startDestination = ROUTE_EMERGENCY,
+        enterTransition = { fadeIn(tween(250)) },
+        exitTransition = { fadeOut(tween(250)) },
+        popEnterTransition = { fadeIn(tween(250)) },
+        popExitTransition = { fadeOut(tween(250)) },
+    ) {
         composable(ROUTE_EMERGENCY) {
             ChatScreen(chatViewModel, bottomBar, startListening)
         }
