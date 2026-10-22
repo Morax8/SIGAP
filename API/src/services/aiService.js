@@ -68,7 +68,7 @@ async function analyzeEmergency(userText, conversationHistory = []) {
         Teks pengguna: "${userText}"
     `;
     
-    let lastError = null;
+    const errorDetails = [];
     
     // Coba semua model yang tersedia (urutan dari AVAILABLE_MODELS)
     for (const modelName of AVAILABLE_MODELS) {
@@ -89,14 +89,14 @@ async function analyzeEmergency(userText, conversationHistory = []) {
         } catch (error) {
             // Kalo model ini gagal, catet error-nya dan coba model berikutnya
             console.warn(`⚠️ ${modelName} gagal:`, error.message);
-            lastError = error;
+            errorDetails.push(`${modelName}: ${error.message}`);
             // Tunggu 1 detik sebelum coba model berikutnya (biar gak spam)
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
     }
     
-    // Kalo semua model gagal, throw error
-    throw lastError || new Error('Semua model gagal');
+    // Kalo semua model gagal, throw error lengkap per model (buat debugging)
+    throw new Error(`Semua model gagal. ${errorDetails.join(' || ')}`);
 }
 
 // Export fungsi biar dipake di controller
