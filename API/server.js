@@ -8,6 +8,19 @@
     const socketIo = require('socket.io');
     require('dotenv').config();
     
+    // === JARING PENGAMAN PROSES ===
+    
+    // Library pihak ketiga (mis. WebSocket msedge-tts) bisa melempar error
+    // secara async di luar try/catch mana pun. TTS yang gagal tidak boleh
+    // mematikan seluruh server dispatch — client Android punya fallback TTS
+    // lokal, jadi server harus tetap hidup apa pun yang terjadi.
+    process.on('unhandledRejection', (reason) => {
+        console.warn('⚠️ Unhandled rejection (diabaikan):', reason && reason.message ? reason.message : reason);
+    });
+    process.on('uncaughtException', (error) => {
+        console.error('❌ Uncaught exception (server tetap hidup):', error && error.message);
+    });
+    
     // === IMPORT MODUL INTERNAL (buatan kita sendiri) ===
     
     // Koneksi ke database MySQL

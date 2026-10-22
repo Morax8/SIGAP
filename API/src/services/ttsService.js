@@ -121,9 +121,13 @@ const CACHE_TTL_MS = 60_000;
 
 /** Sintesis satu segmen; chunk-nya langsung diteruskan ke listener. */
 async function runSegment(text, segment) {
-    const tts = await acquireConnection();
+    let tts = null;
     let reusable = false;
     try {
+        // acquireConnection DI DALAM try: handshake Edge yang gagal (mis. 403)
+        // harus berakhir sebagai warning, bukan rejection yang kabur ke caller —
+        // segmen tetap ditandai done supaya client fallback ke TTS lokal.
+        tts = await acquireConnection();
         const { audioStream } = await tts.toStream(text);
         for await (const chunk of audioStream) {
             segment.chunks.push(chunk);
@@ -161,7 +165,19 @@ function startSynthesis(text) {
         for (let i = 0; i < texts.length; i++) {
             await runSegment(texts[i], entry.segments[i]);
         }
-    })();
+    })().catch((error) => {
+        // Jaring pengaman: rejection di loop ini jangan pernah jadi unhandled
+        // rejection — Node modern mematikan proses kalau itu terjadi, dan
+        // seluruh server dispatch ikut mati cuma gara-gara TTS gagal.
+        console.warn('⚠️ TTS synthesis loop gagal:', error.message);
+        for (const s of entry.segments) {
+            if (!s.done) {
+                s.done = true;
+                s.listeners.forEach((l) => l.onEnd());
+                s.listeners = [];
+            }
+        }
+    });
 
     return entry;
 }
