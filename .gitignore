@@ -1,6 +1,7 @@
 API/node_modules/
 API/.env
 API/.env.render
+API/.env.vps
 CLAUDE.md
 release/
 graphify-out/
