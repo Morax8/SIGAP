@@ -25,7 +25,7 @@ In an accident or a medical emergency, people panic: they don't know what to do,
 
 ## 📲 Try It Now (Download APK)
 
-> ### [⬇️ Download S!GAP.apk](https://github.com/Morax8/SIGAP/releases/download/v1.0.0/SIGAP.apk)
+> ### [⬇️ Download S!GAP.apk](https://github.com/Morax8/SIGAP/releases/download/v1.1/SIGAP.apk)
 > Android 7.0+ · ±18 MB · the backend is already running on our server — **no setup required**
 
 **How to install:**
