@@ -2,6 +2,7 @@
 
 const express = require('express');
 const { getAllHospitals } = require('../models/hospitalModel');
+const { createIncident, listIncidents } = require('../models/incidentModel');
 const { analyzeEmergency } = require('../services/aiService');
 
 const router = express.Router();
@@ -84,6 +85,50 @@ router.get('/models', (req, res) => {
         models: AVAILABLE_MODELS,
         count: AVAILABLE_MODELS.length
     });
+});
+
+// ENDPOINT 6: CREATE LAPORAN DARURAT
+
+// POST /api/incidents - Simpan satu laporan darurat (CREATE)
+router.post('/incidents', async (req, res) => {
+    try {
+        const {
+            clientId, deviceId, report, instruction, state,
+            hospitalName, hospitalPhone, latitude, longitude,
+        } = req.body;
+
+        if (!clientId || !deviceId || !report) {
+            return res.status(400).json({ error: 'clientId, deviceId, dan report wajib diisi' });
+        }
+
+        const saved = await createIncident({
+            clientId, deviceId, report, instruction, state,
+            hospitalName, hospitalPhone, latitude, longitude,
+        });
+        res.status(201).json({ data: saved });
+    } catch (error) {
+        console.error('❌ Create incident error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ENDPOINT 7: READ LAPORAN DARURAT PER DEVICE
+
+// GET /api/incidents?device_id=... - Daftar laporan untuk layar Riwayat
+router.get('/incidents', async (req, res) => {
+    try {
+        const deviceId = req.query.device_id;
+        if (!deviceId) {
+            return res.status(400).json({ error: 'device_id wajib diisi' });
+        }
+
+        const limit = Math.min(Number(req.query.limit) || 50, 100);
+        const data = await listIncidents({ deviceId, limit });
+        res.json({ total: data.length, data });
+    } catch (error) {
+        console.error('❌ List incidents error:', error.message);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 module.exports = router;

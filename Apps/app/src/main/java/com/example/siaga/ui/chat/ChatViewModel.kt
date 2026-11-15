@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.siaga.data.IncidentHistory
+import com.example.siaga.data.IncidentRepository
 import com.example.siaga.data.ServerConfig
 import com.example.siaga.data.location.LocationClient
 import com.example.siaga.data.location.UserLocation
@@ -30,6 +31,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val socketClient = EmergencySocketClient()
     private val locationClient = LocationClient(application)
     private val history = IncidentHistory(application)
+    private val incidentRepository = IncidentRepository(application)
     private val crashDetector = CrashDetector(application, ::onImpactDetected)
     private val crashAlarm = CrashAlarm(application)
     private var crashCountdownJob: Job? = null
@@ -370,6 +372,20 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     hospitalName = response.hospital?.name,
                     hospitalPhone = response.hospital?.phone,
                 )
+                // CREATE ke Supabase. Kalau gagal (offline), riwayat lokal tetap
+                // tersimpan dan app tidak crash.
+                runCatching {
+                    incidentRepository.save(
+                        clientId = id,
+                        report = lastUserMessage.orEmpty(),
+                        instruction = response.instruction,
+                        state = response.state.name,
+                        hospitalName = response.hospital?.name,
+                        hospitalPhone = response.hospital?.phone,
+                        latitude = lastLocation?.latitude,
+                        longitude = lastLocation?.longitude,
+                    )
+                }
             }
         }
 

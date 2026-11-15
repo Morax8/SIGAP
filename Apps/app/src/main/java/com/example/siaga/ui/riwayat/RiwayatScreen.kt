@@ -21,8 +21,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.collectAsState
 import com.example.siaga.data.Incident
 import com.example.siaga.data.IncidentHistory
+import com.example.siaga.data.IncidentRepository
 import com.example.siaga.data.model.EmergencyState
 import com.example.siaga.ui.components.SiagaBackdrop
 import com.example.siaga.ui.components.SiagaGlassCard
@@ -49,7 +53,8 @@ import java.util.Locale
 private const val DESIGN_HEIGHT = 891.61f
 
 /**
- * Halaman Riwayat: laporan darurat yang pernah dikirim, tersimpan di HP.
+ * Halaman Riwayat: laporan darurat yang pernah dikirim, tersimpan di Supabase
+ * (dengan cadangan lokal di DataStore kalau offline).
  *
  * Tidak ada frame Figma untuk halaman ini, jadi gayanya mengikuti sistem yang
  * sudah ada — backdrop yang sama, header seperti SIAGA-03, dan kartu kaca.
@@ -67,7 +72,16 @@ fun RiwayatScreen(
 ) {
     val context = LocalContext.current
     val history = remember { IncidentHistory(context) }
-    val incidents by remember { history.incidents }.collectAsState(initial = emptyList())
+    val localIncidents by remember { history.incidents }.collectAsState(initial = emptyList())
+
+    // READ dari Supabase: daftar laporan diambil dari server saat layar dibuka.
+    // Kalau server tidak bisa dihubungi (offline), pakai riwayat lokal DataStore.
+    val incidentRepository = remember { IncidentRepository(context) }
+    var serverIncidents by remember { mutableStateOf<List<Incident>?>(null) }
+    LaunchedEffect(Unit) {
+        serverIncidents = runCatching { incidentRepository.fetch() }.getOrNull()
+    }
+    val incidents = serverIncidents?.takeIf { it.isNotEmpty() } ?: localIncidents
 
     SiagaBackdrop(designHeight = DESIGN_HEIGHT) {
         Column(modifier = Modifier.fillMaxSize()) {

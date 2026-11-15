@@ -58,7 +58,7 @@ Can't speak? Tap the **keyboard** icon to type instead.
 Add the **S!GAP** widget to your home screen → one tap opens the app already listening. Fewer steps when every second counts.
 
 ### 4. Faskes & Riwayat
-The **Faskes** (Facilities) tab lists the hospitals nearest to you; the **Riwayat** (History) tab keeps a record of every incident you've reported.
+The **Faskes** (Facilities) tab lists the hospitals nearest to you; the **Riwayat** (History) tab keeps a record of every incident you've reported, synced to Supabase (it falls back to on-device storage when offline).
 
 ---
 
@@ -76,7 +76,7 @@ The **Faskes** (Facilities) tab lists the hospitals nearest to you; the **Riwaya
 ```
 
 - **App** (`Apps/`): Kotlin, Jetpack Compose, on-device SpeechRecognizer + TextToSpeech (id-ID) so voice responses are instant with no network round-trip, Socket.IO client, accelerometer-based crash detection, Glance widget.
-- **Backend** (`API/`): Express + Socket.IO, Gemini as the AI dispatcher (with a prompt that forbids long-winded questions in critical situations), Supabase (Postgres) hospital database with Haversine distance search.
+- **Backend** (`API/`): Express + Socket.IO, Gemini as the AI dispatcher (with a prompt that forbids long-winded questions in critical situations), Supabase (Postgres) with the hospital table (Haversine distance search) and the incident history table (`POST/GET /api/incidents`, scoped per device).
 
 ---
 

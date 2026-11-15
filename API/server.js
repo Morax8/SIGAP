@@ -63,6 +63,7 @@
                 health: 'GET /api/health',
                 test: 'POST /api/test-gemini',
                 hospitals: 'GET /api/hospitals',
+                incidents: 'POST /api/incidents, GET /api/incidents?device_id=...',
                 models: 'GET /api/models'
             },
             socket: {
