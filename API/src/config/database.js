@@ -1,9 +1,11 @@
 // ==============================================
-// FILE: src/config/database.js 
+// FILE: src/config/database.js
 // ==============================================
+// PostgreSQL (Supabase) connection pool.
+// DATABASE_URL diambil dari Supabase > Project Settings > Database >
+// Connection string > Connection pooling (host *.pooler.supabase.com).
 
-
-const mysql = require('mysql2/promise');
+const { Pool } = require('pg');
 
 require('dotenv').config();
 
@@ -11,16 +13,13 @@ require('dotenv').config();
 // BUAT POOL KONEKSI
 // ==============================================
 
-// Pool 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST,            
-    user: process.env.DB_USER,            
-    password: process.env.DB_PASSWORD,    
-    database: process.env.DB_NAME,        
-    port: process.env.DB_PORT,            
-    waitForConnections: true,    
-    connectionLimit: 10,         
-    queueLimit: 0                
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // Supabase pakai sertifikat yang belum tentu ada di CA bundle lokal
+    ssl: { rejectUnauthorized: false },
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
 });
 
 // ==============================================
@@ -29,11 +28,8 @@ const pool = mysql.createPool({
 
 async function connectDB() {
     try {
-
-        const connection = await pool.getConnection();
-        console.log('✅ Database connected!');
-  
-        connection.release();
+        await pool.query('select 1');
+        console.log('✅ Database connected! (Supabase Postgres)');
         return true;
     } catch (error) {
         console.error('❌ Database connection failed:', error.message);

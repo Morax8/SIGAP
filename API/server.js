@@ -23,7 +23,7 @@
     
     // === IMPORT MODUL INTERNAL (buatan kita sendiri) ===
     
-    // Koneksi ke database MySQL
+    // Koneksi ke database PostgreSQL (Supabase)
     const { connectDB } = require('./src/config/database');
     const { AVAILABLE_MODELS } = require('./src/config/gemini');
     const apiRoutes = require('./src/routes/api');

@@ -1,7 +1,6 @@
 // FILE: src/routes/api.js (Route HTTP untuk Testing)
 
 const express = require('express');
-const { pool } = require('../config/database');
 const { getAllHospitals } = require('../models/hospitalModel');
 const { analyzeEmergency } = require('../services/aiService');
 

@@ -61,20 +61,22 @@ async function findNearestHospital(lat, lng, district = null) {
             longitude,
             district,
             (6371 * ACOS(
-                COS(RADIANS(?)) * COS(RADIANS(latitude)) * 
-                COS(RADIANS(longitude) - RADIANS(?)) + 
-                SIN(RADIANS(?)) * SIN(RADIANS(latitude))
+                LEAST(1,
+                    COS(RADIANS($1)) * COS(RADIANS(latitude)) * 
+                    COS(RADIANS(longitude) - RADIANS($2)) + 
+                    SIN(RADIANS($1)) * SIN(RADIANS(latitude))
+                )
             )) AS distance_km
         FROM hospitals
-        WHERE is_active = 1
+        WHERE is_active = true
     `;
     
-    // Parameter buat query (lat, lng, lat)
-    const params = [lat, lng, lat];
+    // Parameter buat query (lat, lng)
+    const params = [lat, lng];
     
     // Kalo ada district, prioritasin RS di district yang sama
     if (district) {
-        query += ` AND district = ?`;
+        query += ` AND district = $3`;
         params.push(district);
     }
     
@@ -83,7 +85,7 @@ async function findNearestHospital(lat, lng, district = null) {
     
     try {
         // Eksekusi query
-        const [rows] = await pool.execute(query, params);
+        const { rows } = await pool.query(query, params);
         // Kalo gak ada RS di district yang sama, fallback: cari terdekat tanpa filter district
         if (!rows[0] && district) {
             return findNearestHospital(lat, lng, null);
@@ -102,8 +104,8 @@ async function findNearestHospital(lat, lng, district = null) {
 
 async function getAllHospitals() {
     try {
-        const [rows] = await pool.execute(
-            'SELECT id, name, phone, address, latitude, longitude, district FROM hospitals WHERE is_active = 1'
+        const { rows } = await pool.query(
+            'SELECT id, name, phone, address, latitude, longitude, district FROM hospitals WHERE is_active = true'
         );
         // DB bisa dihubungi tapi tabel kosong -> data fallback
         return rows.length > 0 ? rows : FALLBACK_HOSPITALS;

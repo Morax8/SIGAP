@@ -17,7 +17,7 @@ In an accident or a medical emergency, people panic: they don't know what to do,
 | Muhammad Faathin Naufal | 00000130562 | Android app + UI/UX design |
 | Gerald Alfons Nathaniel Werdiyanto | 00000119185 | Android app + UI/UX design |
 
-- **Backend** (Aditya): Express + Socket.IO (emergency API, real-time dispatch, TTS service), integrasi Gemini AI, MySQL + pencarian Haversine.
+- **Backend** (Aditya): Express + Socket.IO (emergency API, real-time dispatch, TTS service), integrasi Gemini AI, Supabase (Postgres) + pencarian Haversine.
 - **Android app** (dibagi rata): layar Chat/Faskes/Riwayat/Incident Detail/Kontak Darurat, navigasi NavHost + argument passing, form + validasi, ViewModel + StateFlow, integrasi Socket.IO/GPS/TTS/STT + widget SOS.
 - **UI/UX** (Faathin + Gerald): custom Material 3 theme (color scheme, tipografi Inter, shape system), mockup layar.
 
@@ -69,14 +69,14 @@ The **Faskes** (Facilities) tab lists the hospitals nearest to you; the **Riwaya
 │  Android App         │ ◄────────────► │  Node.js Backend (VPS)    │
 │  Kotlin + Compose    │                │  Express + Socket.IO      │
 │  On-device STT/TTS   │                │     │            │        │
-│  GPS + Auto-call     │                │  Gemini AI     MySQL      │
-│  Crash detection     │                │  (dispatcher)  (hospitals │
-│  Widget (Glance)     │                │                Haversine) │
+│  GPS + Auto-call     │                │  Gemini AI   Supabase     │
+│  Crash detection     │                │  (dispatcher) (hospitals  │
+│  Widget (Glance)     │                │               Haversine) │
 └─────────────────────┘                └──────────────────────────┘
 ```
 
 - **App** (`Apps/`): Kotlin, Jetpack Compose, on-device SpeechRecognizer + TextToSpeech (id-ID) so voice responses are instant with no network round-trip, Socket.IO client, accelerometer-based crash detection, Glance widget.
-- **Backend** (`API/`): Express + Socket.IO, Gemini as the AI dispatcher (with a prompt that forbids long-winded questions in critical situations), MySQL hospital database with Haversine distance search.
+- **Backend** (`API/`): Express + Socket.IO, Gemini as the AI dispatcher (with a prompt that forbids long-winded questions in critical situations), Supabase (Postgres) hospital database with Haversine distance search.
 
 ---
 
@@ -84,7 +84,7 @@ The **Faskes** (Facilities) tab lists the hospitals nearest to you; the **Riwaya
 
 The APK above already points to our server, so this section is only needed if you want to run everything locally.
 
-**Prerequisites:** Node.js 18+, MySQL.
+**Prerequisites:** Node.js 18+, a Supabase project (Postgres).
 
 ```bash
 cd API
@@ -96,18 +96,16 @@ Create `API/.env`:
 ```env
 PORT=3000
 GEMINI_API_KEY=your_gemini_api_key        # https://aistudio.google.com/apikey
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=siaga_db
+DATABASE_URL=postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
 DEMO_PHONE=08119711322                     # all calls are routed here
 ```
 
-Seed the database (creates `siaga_db` + sample hospitals for the Tangerang area):
+> Use the **Session pooler** connection string from Supabase (Dashboard → **Connect** → Session pooler). The direct `db.<ref>.supabase.co` host is IPv6-only on the free tier.
+
+Seed the database (creates the `hospitals` table + sample hospitals for the Tangerang area):
 
 ```bash
-mysql -u root < seed.sql
+npm run seed
 ```
 
 Run it:
@@ -129,5 +127,5 @@ or `cd Apps && ./gradlew installDebug`.
 | Folder | Contents |
 |---|---|
 | `Apps/` | Android app (Kotlin + Jetpack Compose) |
-| `API/` | Node.js backend (Express + Socket.IO + Gemini + MySQL) |
+| `API/` | Node.js backend (Express + Socket.IO + Gemini + Supabase) |
 | `release/SIGAP.apk` | Ready-to-install APK |
